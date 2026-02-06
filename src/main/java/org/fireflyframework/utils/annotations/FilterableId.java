@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Firefly Software Solutions Inc
+ * Copyright 2024-2026 Firefly Software Solutions Inc
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 
 
-package com.firefly.core.utils.annotations;
+package org.fireflyframework.utils.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

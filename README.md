@@ -53,7 +53,7 @@ To use the utilities in this library, simply add the lib-utils dependency to you
 ```xml
 <!-- lib-utils library -->
 <dependency>
-    <groupId>com.firefly</groupId>
+    <groupId>org.fireflyframework</groupId>
     <artifactId>lib-utils</artifactId>
     <version>1.0.0</version>
 </dependency>

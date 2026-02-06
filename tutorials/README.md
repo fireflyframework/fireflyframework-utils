@@ -9,7 +9,7 @@ Before starting these tutorials, make sure you have:
 1. Added the lib-utils dependency to your project:
    ```xml
    <dependency>
-       <groupId>com.firefly</groupId>
+       <groupId>org.fireflyframework</groupId>
        <artifactId>lib-utils</artifactId>
        <version>1.0.0</version>
    </dependency>
@@ -76,7 +76,7 @@ This tutorial covers advanced features of the `TemplateRenderUtil` class:
 
 If you encounter any issues or have questions about the tutorials or the lib-utils library:
 
-1. Check the [GitHub Issues](https://github.com/firefly-oss/lib-utils/issues) for existing problems and solutions
+1. Check the [GitHub Issues](https://github.org/fireflyframework-oss/lib-utils/issues) for existing problems and solutions
 2. Create a new issue if your problem hasn't been addressed
 3. Contribute improvements to the tutorials by submitting a pull request
 
