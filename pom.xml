@@ -20,14 +20,14 @@
         <dependency>
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>
-            <version>2.3.32</version>
+            <version>2.3.34</version>
         </dependency>
 
         <!-- Flying Saucer for PDF generation -->
         <dependency>
             <groupId>org.xhtmlrenderer</groupId>
             <artifactId>flying-saucer-pdf-openpdf</artifactId>
-            <version>9.3.1</version>
+            <version>9.3.2</version>
         </dependency>
 
         <!-- SLF4J API for logging (version managed by Spring Boot BOM) -->
