@@ -1,5 +1,7 @@
 # lib-utils
 
+[![CI](https://github.com/fireflyframework/fireflyframework-utils/actions/workflows/ci.yml/badge.svg)](https://github.com/fireflyframework/fireflyframework-utils/actions/workflows/ci.yml)
+
 A collection of utility classes for common operations in Java applications.
 
 ## Overview
