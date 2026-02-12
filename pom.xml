@@ -7,13 +7,16 @@
     <parent>
         <groupId>org.fireflyframework</groupId>
         <artifactId>fireflyframework-parent</artifactId>
-        <version>26.02.02</version>
+        <version>26.02.03</version>
         <relativePath/>
     </parent>
 
     <artifactId>fireflyframework-utils</artifactId>
-    <version>26.02.02</version>
+    <version>26.02.03</version>
     <packaging>jar</packaging>
+
+    <name>Firefly Framework - Utils</name>
+    <description>Utility classes for PDF generation, templating, and common operations</description>
 
     <dependencies>
         <!-- FreeMarker Template Engine -->
