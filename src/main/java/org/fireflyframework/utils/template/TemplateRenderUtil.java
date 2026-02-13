@@ -83,7 +83,7 @@ import java.util.function.BiFunction;
  * - Enhanced PDF options (watermarks, encryption, metadata)
  */
 public class TemplateRenderUtil {
-    private static final Logger logger = LoggerFactory.getLogger(TemplateRenderUtil.class);
+    private static final Logger log = LoggerFactory.getLogger(TemplateRenderUtil.class);
     private static final List<TemplateLoader> additionalLoaders = new ArrayList<>();
     private static Configuration freemarkerConfig = createFreemarkerConfig();
     private static final Map<String, Template> templateCache = new ConcurrentHashMap<>();
@@ -119,7 +119,7 @@ public class TemplateRenderUtil {
             TemplateLoader[] loaders = loaderList.toArray(new TemplateLoader[0]);
             cfg.setTemplateLoader(new MultiTemplateLoader(loaders));
         } catch (IOException e) {
-            logger.warn("Filesystem loader not available, falling back to classpath only", e);
+            log.warn("Filesystem loader not available, falling back to classpath only", e);
 
             if (additionalLoaders.isEmpty()) {
                 cfg.setTemplateLoader(ctl);
@@ -151,11 +151,11 @@ public class TemplateRenderUtil {
             try {
                 freemarkerConfig.setSharedVariable(entry.getKey(), entry.getValue());
             } catch (TemplateException e) {
-                logger.error("Failed to set shared variable: {}", entry.getKey(), e);
+                log.error("Failed to set shared variable: {}", entry.getKey(), e);
             }
         }
 
-        logger.info("FreeMarker configuration has been reset");
+        log.info("FreeMarker configuration has been reset");
     }
 
     /**
@@ -172,7 +172,7 @@ public class TemplateRenderUtil {
 
         sharedVariables.put(name, value);
         freemarkerConfig.setSharedVariable(name, value);
-        logger.info("Added shared variable: {}", name);
+        log.info("Added shared variable: {}", name);
     }
 
     /**
@@ -187,7 +187,7 @@ public class TemplateRenderUtil {
 
         sharedVariables.remove(name);
         // Just remove from the map, no need to set to null in the config
-        logger.info("Removed shared variable: {}", name);
+        log.info("Removed shared variable: {}", name);
     }
 
     /**
@@ -196,7 +196,7 @@ public class TemplateRenderUtil {
     public static void clearSharedVariables() {
         sharedVariables.clear();
         resetConfiguration();
-        logger.info("Cleared all shared variables");
+        log.info("Cleared all shared variables");
     }
 
     /**
@@ -212,9 +212,9 @@ public class TemplateRenderUtil {
 
         try {
             freemarkerConfig.setSettings(properties);
-            logger.info("Applied configuration properties");
+            log.info("Applied configuration properties");
         } catch (TemplateException e) {
-            logger.error("Failed to apply configuration properties", e);
+            log.error("Failed to apply configuration properties", e);
             throw e;
         }
     }
@@ -227,7 +227,7 @@ public class TemplateRenderUtil {
      */
     public static void setTemplatePreProcessor(BiFunction<String, Map<String, Object>, String> preprocessor) {
         templatePreProcessor = preprocessor;
-        logger.info("Template preprocessor {}", preprocessor != null ? "set" : "removed");
+        log.info("Template preprocessor {}", preprocessor != null ? "set" : "removed");
     }
 
     /**
@@ -238,7 +238,7 @@ public class TemplateRenderUtil {
      */
     public static void setTemplatePostProcessor(BiFunction<String, Map<String, Object>, String> postprocessor) {
         templatePostProcessor = postprocessor;
-        logger.info("Template postprocessor {}", postprocessor != null ? "set" : "removed");
+        log.info("Template postprocessor {}", postprocessor != null ? "set" : "removed");
     }
 
     /**
@@ -258,7 +258,7 @@ public class TemplateRenderUtil {
 
         // Create a new executor service with the specified thread count
         executorService = Executors.newFixedThreadPool(threadCount);
-        logger.info("Async thread pool size set to {}", threadCount);
+        log.info("Async thread pool size set to {}", threadCount);
     }
 
     /**
@@ -268,7 +268,7 @@ public class TemplateRenderUtil {
     public static void shutdownAsyncThreadPool() {
         if (executorService != null) {
             executorService.shutdown();
-            logger.info("Async thread pool shut down");
+            log.info("Async thread pool shut down");
         }
     }
 
@@ -286,7 +286,7 @@ public class TemplateRenderUtil {
         freemarkerConfig.setDirectoryForTemplateLoading(dir);
         // Clear the template cache when changing the template directory
         templateCache.clear();
-        logger.info("FreeMarker configured to load templates from directory: {}", templateDir);
+        log.info("FreeMarker configured to load templates from directory: {}", templateDir);
     }
 
     /**
@@ -302,7 +302,7 @@ public class TemplateRenderUtil {
 
         additionalLoaders.add(loader);
         resetConfiguration();
-        logger.info("Added custom template loader: {}", loader.getClass().getSimpleName());
+        log.info("Added custom template loader: {}", loader.getClass().getSimpleName());
     }
 
     /**
@@ -315,9 +315,9 @@ public class TemplateRenderUtil {
         templateCachingEnabled = enabled;
         if (!enabled) {
             templateCache.clear();
-            logger.info("Template caching disabled and cache cleared");
+            log.info("Template caching disabled and cache cleared");
         } else {
-            logger.info("Template caching enabled");
+            log.info("Template caching enabled");
         }
     }
 
@@ -341,7 +341,7 @@ public class TemplateRenderUtil {
             templateCache.clear();
         }
 
-        logger.info("Template cache max size set to: {}", maxSize);
+        log.info("Template cache max size set to: {}", maxSize);
     }
 
     /**
@@ -349,7 +349,7 @@ public class TemplateRenderUtil {
      */
     public static void clearTemplateCache() {
         templateCache.clear();
-        logger.info("Template cache cleared");
+        log.info("Template cache cleared");
     }
 
     /**
@@ -375,10 +375,10 @@ public class TemplateRenderUtil {
         File dir = new File(fileSystemDir);
         if (!dir.exists()) {
             if (!dir.mkdirs()) {
-                logger.warn("Could not create template directory: {}", fileSystemDir);
+                log.warn("Could not create template directory: {}", fileSystemDir);
                 // Continue with just the classpath loader
                 freemarkerConfig.setTemplateLoader(classLoader);
-                logger.info("FreeMarker configured to load templates from classpath:{} only", classpathPrefix);
+                log.info("FreeMarker configured to load templates from classpath:{} only", classpathPrefix);
                 return;
             }
         }
@@ -391,13 +391,13 @@ public class TemplateRenderUtil {
             FileTemplateLoader fileLoader = new FileTemplateLoader(dir);
             TemplateLoader[] loaders = new TemplateLoader[]{classLoader, fileLoader};
             freemarkerConfig.setTemplateLoader(new MultiTemplateLoader(loaders));
-            logger.info("FreeMarker configured to load templates from classpath:{} and directory:{}",
+            log.info("FreeMarker configured to load templates from classpath:{} and directory:{}",
                       classpathPrefix, fileSystemDir);
         } catch (IOException e) {
             // If file loader fails, continue with just the classpath loader
             freemarkerConfig.setTemplateLoader(classLoader);
-            logger.info("FreeMarker configured to load templates from classpath:{} only", classpathPrefix);
-            logger.warn("Could not configure file system template loader", e);
+            log.info("FreeMarker configured to load templates from classpath:{} only", classpathPrefix);
+            log.warn("Could not configure file system template loader", e);
         }
     }
 
@@ -435,10 +435,10 @@ public class TemplateRenderUtil {
                 return result;
             }
         } catch (IOException e) {
-            logger.error("Failed to load template: {}", templateName, e);
+            log.error("Failed to load template: {}", templateName, e);
             throw new IOException("Failed to load template: " + templateName, e);
         } catch (TemplateException e) {
-            logger.error("Failed to process template: {}", templateName, e);
+            log.error("Failed to process template: {}", templateName, e);
             throw e;
         }
     }
@@ -480,14 +480,14 @@ public class TemplateRenderUtil {
             // Add to cache if not at max size
             if (templateCache.size() < templateCacheMaxSize) {
                 templateCache.put(templateName, template);
-                logger.debug("Added template to cache: {}", templateName);
+                log.debug("Added template to cache: {}", templateName);
             } else {
                 // Cache is full, log a warning
-                logger.warn("Template cache is full (size: {}). Consider increasing the cache size.",
+                log.warn("Template cache is full (size: {}). Consider increasing the cache size.",
                         templateCacheMaxSize);
             }
         } else {
-            logger.debug("Template loaded from cache: {}", templateName);
+            log.debug("Template loaded from cache: {}", templateName);
         }
 
         return template;
@@ -536,10 +536,10 @@ public class TemplateRenderUtil {
 
             return result;
         } catch (TemplateException e) {
-            logger.error("Failed to process template string: {}", templateName, e);
+            log.error("Failed to process template string: {}", templateName, e);
             throw e;
         } catch (IOException e) {
-            logger.error("I/O error processing template string: {}", templateName, e);
+            log.error("I/O error processing template string: {}", templateName, e);
             throw e;
         }
     }
@@ -580,7 +580,7 @@ public class TemplateRenderUtil {
 
         Path templatePath = Paths.get(templateDir.getPath(), templateName);
         Files.write(templatePath, templateContent.getBytes(StandardCharsets.UTF_8));
-        logger.info("Template saved to: {}", templatePath);
+        log.info("Template saved to: {}", templatePath);
     }
 
     /**
@@ -756,7 +756,7 @@ public class TemplateRenderUtil {
                                               String outputPath, PdfOptions options) throws Exception {
         try (FileOutputStream fos = new FileOutputStream(outputPath)) {
             renderTemplateToPdf(templateName, dataModel, fos, options);
-            logger.info("PDF created successfully at: {}", outputPath);
+            log.info("PDF created successfully at: {}", outputPath);
         }
     }
 
@@ -788,7 +788,7 @@ public class TemplateRenderUtil {
                                                     String outputPath, PdfOptions options) throws Exception {
         try (FileOutputStream fos = new FileOutputStream(outputPath)) {
             renderTemplateStringToPdf(templateContent, templateName, dataModel, fos, options);
-            logger.info("PDF created successfully at: {}", outputPath);
+            log.info("PDF created successfully at: {}", outputPath);
         }
     }
 
@@ -983,12 +983,12 @@ public class TemplateRenderUtil {
                         String name = f.getName().toLowerCase();
                         if (name.endsWith(".ttf") || name.endsWith(".otf")) {
                             fr.addFont(f.getAbsolutePath(), true);
-                            logger.debug("Loaded font: {}", f.getName());
+                            log.debug("Loaded font: {}", f.getName());
                         }
                     }
                 }
             } catch (Exception e) {
-                logger.warn("Error loading fonts from {}", opts.getFontDir(), e);
+                log.warn("Error loading fonts from {}", opts.getFontDir(), e);
             }
         }
     }
@@ -1297,7 +1297,7 @@ public class TemplateRenderUtil {
     public static void renderHtmlToPdfFile(String htmlContent, String outputPath, PdfOptions options) throws Exception {
         try (FileOutputStream fos = new FileOutputStream(outputPath)) {
             renderHtmlToPdf(htmlContent, fos, options);
-            logger.info("PDF created successfully at: {}", outputPath);
+            log.info("PDF created successfully at: {}", outputPath);
         }
     }
 
@@ -1375,7 +1375,7 @@ public class TemplateRenderUtil {
     public static void saveImageToFile(byte[] imageBytes, String outputPath) throws IOException {
         try (FileOutputStream fos = new FileOutputStream(outputPath)) {
             fos.write(imageBytes);
-            logger.info("Image saved to: {}", outputPath);
+            log.info("Image saved to: {}", outputPath);
         }
     }
 
