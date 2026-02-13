@@ -19,6 +19,13 @@
     <description>Utility classes for PDF generation, templating, and common operations</description>
 
     <dependencies>
+        <!-- Firefly Kernel (foundational: exceptions, shared abstractions) -->
+        <dependency>
+            <groupId>org.fireflyframework</groupId>
+            <artifactId>fireflyframework-kernel</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <!-- FreeMarker Template Engine -->
         <dependency>
             <groupId>org.freemarker</groupId>
